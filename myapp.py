@@ -3,9 +3,10 @@
 #1 import streamlit and chatbot file
 import streamlit as st 
 import chatbot_backend as demo  #**Import your Chatbot file as demo
+import requests as requests
 
 #2 Set Title for Chatbot - https://docs.streamlit.io/library/api-reference/text/st.title
-st.title("Hi, This is Chatbot for Report :sunglasses:") # **Modify this based on the title you want in want
+st.title("Hi, This is Chatbot for Hackathon :sunglasses:") # **Modify this based on the title you want in want
 
 #3 LangChain memory to the session cache - Session State - https://docs.streamlit.io/library/api-reference/session-state
 if 'memory' not in st.session_state: 
@@ -32,9 +33,13 @@ if input_text:
     st.session_state.chat_history.append({"role":"user", "text":input_text}) 
 
     # chat_response = demo.demo_conversation(input_text=input_text, memory=st.session_state.memory) #** replace with ConversationChain Method name - call the model through the supporting library
-    chat_response = f"Ok, {input_text}"
+    my_api_token = st.secrets["my_api_token"]
+    headers = {'Authorization': f'Basic {my_api_token}'}
+    chat_response = requests.get('https://sandbox.xfers.io/api/v4/overviews/balance_overview', headers=headers)
+    
+    # chat_response = f"Ok, {input_text}"
     
     with st.chat_message("assistant"): 
-        st.markdown(chat_response) 
+        st.markdown(chat_response.json()) 
     
     st.session_state.chat_history.append({"role":"assistant", "text":chat_response}) 
