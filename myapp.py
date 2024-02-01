@@ -32,7 +32,7 @@ if input_text:
     st.session_state.chat_history.append({"role":"user", "text":input_text}) 
 
     # chat_response = demo.demo_conversation(input_text=input_text, memory=st.session_state.memory) #** replace with ConversationChain Method name - call the model through the supporting library
-    chat_response = f"Ok, {input_text}"
+    chat_response = demo.claude_response(input_text)
     
     with st.chat_message("assistant"): 
         st.markdown(chat_response) 
